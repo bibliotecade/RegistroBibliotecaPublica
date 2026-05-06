@@ -8,7 +8,7 @@ export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).json({ error: "Método no permitido" });
 
   // 🏠 URL de tu Ngrok configurada en el panel de Vercel
-  const URL_LOCAL = process.env.URL_MI_CASA;
+  const URL_LOCAL = process.env.OLLAMA_BASE_URL;
 
   if (!URL_LOCAL) {
     return res.status(500).json({ error: "La URL del servidor local no está configurada en Vercel" });
@@ -49,6 +49,6 @@ export default async function handler(req, res) {
 
   } catch (error) {
     console.error("ERROR OLLAMA LOCAL:", error);
-    return res.status(500).json({ error: "No se pudo conectar con el servidor de la biblioteca (PC de Jose)" });
+    return res.status(500).json({ error: "No se pudo conectar con el servidor de la biblioteca" });
   }
 }
