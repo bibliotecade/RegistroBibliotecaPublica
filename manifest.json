@@ -1,0 +1,20 @@
+{
+  "name": "Registro Biblioteca Pública de Ibros",
+  "short_name": "Registro Biblioteca.v7",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#444444",
+  "icons": [
+    {
+      "src": "gemini190px.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "gemini512p.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
