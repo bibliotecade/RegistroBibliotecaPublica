@@ -472,14 +472,22 @@ body {
 }
 
 
+.header-container {
+  display: flex;
+  align-items: center; /* Centra verticalmente */
+  justify-content: flex-start; /* Alinea a la izquierda */
+  padding: 20px; /* Espaciado interno en lugar de 'left' */
+}
+
+
+
 .header-container img {
-  position: absolute;
-  left: 5vw;        /* Se mueve proporcional al ancho de pantalla */
-  width: 20%;       /* Ocupa una quinta parte del ancho */
-  min-width: 150px; /* Evita que se haga minúscula en móviles */
-  height: auto;
+  max-width: 100%; /* No desborda el contenedor */
+  height: auto;    /* Mantiene la proporción */
+  width: 250px;    /* Tamaño máximo deseado */
   object-fit: contain;
 }
+
 
 
 
