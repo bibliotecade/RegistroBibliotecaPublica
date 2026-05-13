@@ -918,18 +918,19 @@ let fuePorVoz = false;
 
 
 
+)
+
+
 async function init() {
-
-  addMsg("ai-msg", "¡Hola, soy José! Tu asistente de la Biblioteca de Ibros. Puedo decirte de qué tratan los títulos, darte ideas de lectura o hacerte aclaraciones.
-Para comprobar disponibilidad usa el buscador de la web o consulta a mi compañero Antonio Jesús en el Punto Vuela.
-¿Sobre qué te apetece leer hoy?", true)
-;
-
-  
+  addMsg("ai-msg", "¡Hola, soy José! Tu asistente de la Biblioteca de Ibros. Puedo decirte de qué tratan los títulos, darte ideas de lectura o hacerte aclaraciones. Para comprobar disponibilidad usa el buscador de la web o consulta a mi compañero Antonio Jesús en el Punto Vuela. ¿Sobre qué te apetece leer hoy?", true);
 
   try {
+    const res = await fetch(`${API_URL}`);
+    // ... resto del código que carga la tabla
 
-      const res = await fetch(`${API_URL}?action=getEstanterias`);
+
+
+action=getEstanterias`);
 
       const data = await res.json();
 
