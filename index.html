@@ -1122,15 +1122,7 @@ searchInput.onkeyup = function() {
       </tr>`).join("");
   }, 300); 
 };
-      const resultados = librosCache.filter(l => 
-
-          l.titulo.toLowerCase().includes(v) || 
-
-          l.autor.toLowerCase().includes(v) ||
-
-          l.id.toLowerCase().includes(v)
-
-      );
+  
 
       tabla.innerHTML = resultados.map(l => `<tr>
 
