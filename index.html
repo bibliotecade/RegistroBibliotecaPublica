@@ -1094,48 +1094,34 @@ async function cargar(est) {
 
 
 
+// BUSCADOR EN TIEMPO REAL INMUNIZADO A MAYÚSCULAS Y TILDES
 let temporizadorBuscador;
-
 searchInput.onkeyup = function() {
-
   clearTimeout(temporizadorBuscador); 
-
-  const v = this.value.toLowerCase().trim();
-
+  
+  // Normalizamos el texto de búsqueda introducido por el usuario
+  const v = normalizarTexto(this.value).trim();
+  
   temporizadorBuscador = setTimeout(() => {
-
       if (v === "") { 
-
           cargar(select.value); 
-
           return;
-
       }
-
+      
+      // Filtramos usando la misma normalización en cada campo de librosCache
       const resultados = librosCache.filter(l => 
-
-          l.titulo.toLowerCase().includes(v) || 
-
-          l.autor.toLowerCase().includes(v) ||
-
-          l.id.toLowerCase().includes(v)
-
+          normalizarTexto(l.titulo).includes(v) || 
+          normalizarTexto(l.autor).includes(v) ||
+          normalizarTexto(l.id).includes(v)
       );
 
       tabla.innerHTML = resultados.map(l => `<tr>
-
           <td>${l.titulo} <span class="ubicacion-tag">📍 ${l.estanteria}</span></td>
-
           <td>${l.autor}</td>
-
           <td>${l.id}</td>
-
       </tr>`).join("");
-
   }, 300); 
-
 };
-
 
 
 function leerVozAlta(texto) {
