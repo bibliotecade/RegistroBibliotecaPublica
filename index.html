@@ -730,6 +730,40 @@ th:nth-child(3), td:nth-child(3) { width: 20%; }
   .ubicacion-tag { display: inline-block; margin-top: 10px; font-size: 12px; padding: 6px 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 12px; color: var(--text); width: fit-content; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
 }
 
+  /* INDICADOR DE CARGA DE CACHÉ */
+#loading-cache-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: -25px auto 25px auto;
+  padding: 10px 20px;
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  border-radius: 30px;
+  width: fit-content;
+  max-width: 90%;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  font-size: 13px;
+  font-weight: bold;
+  color: var(--text);
+}
+
+.spinner-cache {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--border);
+  border-top: 2px solid var(--text);
+  border-radius: 50%;
+  animation: spinCache 0.8s linear infinite;
+}
+
+@keyframes spinCache {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 </style>
 
 </head>
@@ -760,7 +794,7 @@ th:nth-child(3), td:nth-child(3) { width: 20%; }
 
 
 
-  <div id="sidebar-chat">
+  "<section id="sidebar-chat" style="display:none";>
 
       <div class="chat-header">Bibliotecario Digital</div>
 
@@ -776,7 +810,7 @@ th:nth-child(3), td:nth-child(3) { width: 20%; }
 
   </div>
 
-</div>
+</section>"
 
 
 
@@ -809,6 +843,11 @@ th:nth-child(3), td:nth-child(3) { width: 20%; }
 
       <select id="estanterias"></select>
 
+  </div>
+
+  <div id="loading-cache-container">
+      <div class="spinner-cache"></div>
+      <span id="loading-cache-text">Iniciando carga de estanterías...</span>
   </div>
 
   <div class="qr code">
