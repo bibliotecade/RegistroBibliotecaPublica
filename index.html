@@ -730,40 +730,6 @@ th:nth-child(3), td:nth-child(3) { width: 20%; }
   .ubicacion-tag { display: inline-block; margin-top: 10px; font-size: 12px; padding: 6px 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 12px; color: var(--text); width: fit-content; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
 }
 
-  /* INDICADOR DE CARGA DE CACHÉ */
-#loading-cache-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  margin: -25px auto 25px auto;
-  padding: 10px 20px;
-  background: var(--input-bg);
-  border: 1px solid var(--border);
-  border-radius: 30px;
-  width: fit-content;
-  max-width: 90%;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  transition: opacity 0.5s ease, transform 0.5s ease;
-  font-size: 13px;
-  font-weight: bold;
-  color: var(--text);
-}
-
-.spinner-cache {
-  width: 16px;
-  height: 16px;
-  border: 2px solid var(--border);
-  border-top: 2px solid var(--text);
-  border-radius: 50%;
-  animation: spinCache 0.8s linear infinite;
-}
-
-@keyframes spinCache {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
 </style>
 
 </head>
@@ -786,7 +752,7 @@ th:nth-child(3), td:nth-child(3) { width: 20%; }
 
           <a href="descargar app.html" class="menu-link">Descargar App</a>
 
-        <p> VERSIÓN 1.0.8</p>
+        <p> VERSIÓN 1.0.7</p>
 
       </nav>
 
@@ -794,7 +760,7 @@ th:nth-child(3), td:nth-child(3) { width: 20%; }
 
 
 
-  <section id="sidebar-chat" style="display:none";>
+  <div id="sidebar-chat">
 
       <div class="chat-header">Bibliotecario Digital</div>
 
@@ -810,7 +776,7 @@ th:nth-child(3), td:nth-child(3) { width: 20%; }
 
   </div>
 
-</section>
+</div>
 
 
 
@@ -843,11 +809,6 @@ th:nth-child(3), td:nth-child(3) { width: 20%; }
 
       <select id="estanterias"></select>
 
-  </div>
-
-  <br><br><div id="loading-cache-container">
-      <div class="spinner-cache"></div>
-      <span id="loading-cache-text">Iniciando carga de estanterías...</span>
   </div>
 
   <div class="qr code">
@@ -1008,62 +969,45 @@ select.onchange = () => {
 
 
 async function cargarCacheFondo(estanterias) {
-    const container = document.getElementById("loading-cache-container");
-    const textIndicator = document.getElementById("loading-cache-text");
 
-    let total = estanterias.length;
-    let completadas = 0;
+  for (let est of estanterias) {
 
-    for (let est of estanterias) {
-        try {
-            if (textIndicator) {
-                textIndicator.textContent = `Cargando ${est} (${completadas + 1}/${total})...`;
-            }
+      try {
 
-            const res = await fetch(`${API_URL}?estanteria=${encodeURIComponent(est)}`);
-            if (!res.ok) throw new Error(`HTTP ${res.status}`);
-            
-            const libros = await res.json();
+          const res = await fetch(`${API_URL}?estanteria=${encodeURIComponent(est)}`);
 
-            if (Array.isArray(libros)) {
-                libros.forEach(l => {
-                    if (l.titulo && !String(l.titulo).includes("Título")) {
-                        librosCache.push({
-                            titulo: String(l.titulo),
-                            autor: String(l.autor || "Anónimo"),
-                            id: String(l.id || "N/A"),
-                            estanteria: est
-                        });
-                    }
-                });
-            }
-        } catch (e) {
-            console.warn(`Error cargando caché para estantería ${est}:`, e);
-        }
-        completadas++;
-    }
+          const libros = await res.json();
 
-    // Animación final de salida
-    if (container) {
-        if (textIndicator) {
-            textIndicator.textContent = "¡Buscador listo! Todas las estanterías cargadas.";
-        }
-        
-        const spinner = container.querySelector(".spinner-cache");
-        if (spinner) {
-            spinner.style.display = "none";
-        }
-        
-        container.style.borderColor = "#2ec4b6"; // Borde verde
-        
-        setTimeout(() => {
-            container.style.opacity = "0";
-            setTimeout(() => {
-                container.style.display = "none";
-            }, 500);
-        }, 1500);
-    }
+          libros.forEach(l => {
+
+              if(l.titulo && !String(l.titulo).includes("Título")) {
+
+                  librosCache.push({
+
+                      titulo: String(l.titulo),
+
+                      autor: String(l.autor || "Anónimo"),
+
+                      id: String(l.id || "N/A"),
+
+                      estanteria: est 
+
+                  });
+
+              }
+
+          });
+
+      } catch(e) {
+
+          console.warn(`Error cargando caché para estantería ${est}:`, e);
+
+      }
+
+  }
+
 }
+
 
 
 async function cargar(est) {
@@ -1112,8 +1056,7 @@ searchInput.onkeyup = function() {
 
       }
 
-
-  const resultados = librosCache.filter(l => 
+      const resultados = librosCache.filter(l => 
 
           l.titulo.toLowerCase().includes(v) || 
 
@@ -1122,6 +1065,21 @@ searchInput.onkeyup = function() {
           l.id.toLowerCase().includes(v)
 
       );
+
+      tabla.innerHTML = resultados.map(l => `<tr>
+
+          <td>${l.titulo} <span class="ubicacion-tag">📍 ${l.estanteria}</span></td>
+
+          <td>${l.autor}</td>
+
+          <td>${l.id}</td>
+
+      </tr>`).join("");
+
+  }, 300); 
+
+};
+
 
 
 function leerVozAlta(texto) {
