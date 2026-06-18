@@ -1438,6 +1438,14 @@ init();
 
   }
 
+  // FUNCIÓN HELPER PARA IGNORAR MAYÚSCULAS Y ACENTOS
+function normalizarTexto(texto) {
+    return String(texto)
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+}
+
 </script>
 
 </body>
